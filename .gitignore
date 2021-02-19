@@ -1,0 +1,6 @@
+/.idea/
+/first_lab/__pycache__/
+/second_lab/__pycache__/
+*.odt
+*.pdf
+/first_lab/build/
