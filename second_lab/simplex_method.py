@@ -1,5 +1,6 @@
-import numpy as np
 import copy
+
+import numpy as np
 
 
 def inverse_matrix(A_inv, x, i):
@@ -21,9 +22,8 @@ def inverse_matrix(A_inv, x, i):
     return np.dot(Q, A_inv)
 
 
-def simplex_method(A, c, x):
+def simplex_method(A, c, x, j):
     A_b_inv = None
-    j = [i for i, value in enumerate(x) if value > 0]
 
     print("A = ", A)
     print("c = ", c)
@@ -31,7 +31,11 @@ def simplex_method(A, c, x):
     print("J = ", j)
     while True:
         A_b, c_b = np.column_stack([A[:, i] for i in j]), np.array([c[i] for i in j])
-        A_b_inv = np.linalg.inv(A_b) if A_b_inv is None else inverse_matrix(A_b_inv, A[:, j_0], s)
+        A_b_inv = (
+            np.linalg.inv(A_b)
+            if A_b_inv is None
+            else inverse_matrix(A_b_inv, A[:, j_0], s)
+        )
         print("Inverse A: ", A_b_inv, end="\n\n")
 
         u = np.dot(c_b, A_b_inv)
@@ -42,7 +46,7 @@ def simplex_method(A, c, x):
 
         if not J_n:
             print("Optimal plan: ", x)
-            return x
+            return x, j
 
         j_0 = J_n[0]
         print("j_0 = ", j_0)
@@ -68,7 +72,7 @@ def simplex_method(A, c, x):
         print("x = ", x, end="\n\n")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     A = [
         [-1, 1, 1, 0, 0],
         [1, 0, 0, 1, 0],
@@ -79,7 +83,7 @@ if __name__ == '__main__':
 
     x = [0, 0, 1, 3, 2]
 
-    simplex_method(np.array(A), c, x)
+    simplex_method(np.array(A), c, x, [2, 3, 4])
     print()
     print()
 
@@ -92,7 +96,7 @@ if __name__ == '__main__':
 
     x = [1, 0, 0, 3]
 
-    simplex_method(np.array(A), c, x)
+    simplex_method(np.array(A), c, x, [0, 3])
     print()
     print()
 
@@ -105,7 +109,7 @@ if __name__ == '__main__':
 
     c = [22, 31, 1, 0, 0, 0]
     x = [0, 0, 22, 54, 10, 5]
-    simplex_method(np.array(A), c, x)
+    simplex_method(np.array(A), c, x, [2, 3, 4, 5])
     print()
     print()
 
@@ -118,5 +122,17 @@ if __name__ == '__main__':
 
     x = [0, 0, 18, 28]
 
-    simplex_method(np.array(A), c, x)
+    simplex_method(np.array(A), c, x, [2, 3])
+    print()
+
+    A = [
+        [0, -4, 1, 1],
+        [-1, 1, 0, 1],
+    ]
+
+    c = [-5, -1, 0, 1]
+
+    x = [0, 0, 18, 28]
+
+    simplex_method(np.array(A), c, x, [2, 3])
     print()
