@@ -5,3 +5,4 @@
 *.pdf
 /first_lab/build/
 /venv/
+__pycache__/
